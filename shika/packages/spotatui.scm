@@ -1,0 +1,37 @@
+;;; SPDX-FileCopyrightText: 2026 Nikita Mitasov <me@ch4og.com>
+;;; SPDX-License-Identifier: GPL-3.0-or-later
+
+(define-module (shika packages spotatui)
+  #:use-module (guix packages)
+  #:use-module (gnu packages pkg-config)
+  #:use-module (gnu packages linux)
+  #:use-module (gnu packages rust)
+  #:use-module (gnu packages tls)
+  #:use-module (guix git-download)
+  #:use-module (guix build-system cargo)
+  #:use-module (shika utils cargo)
+  #:use-module ((guix licenses) #:prefix license:))
+
+(define-public spotatui
+  (package
+    (name "spotatui")
+    (version "0.35.1")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+              (url "https://github.com/LargeModGames/spotatui")
+              (commit (string-append "v" version))))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "1cdlrawxrg76k2x2z5hcdlxsq5diwmma8356bh68dd9ldzaflfrs"))))
+    (build-system cargo-build-system)
+    (native-inputs (list pkg-config))
+    (inputs (cons* openssl alsa-lib (shika-cargo-inputs 'spotatui)))
+    (arguments (list #:rust rust-1.88))
+    (home-page "https://github.com/LargeModGames/spotatui")
+    (synopsis "A Spotify client for the terminal written in Rust, powered by Ratatui.")
+    (description "A fully standalone Spotify client for the terminal. Native streaming included, no daemon required.")
+    (license license:expat)))
+
+spotatui
