@@ -29,7 +29,9 @@
     (native-inputs (list bats execline perl python))
     (arguments
      `(#:vendor-hash "0md3cz9yqr2y11x9nxicqvvgb3qapr2pkwswwk798nzxcq3l4j7z"
-       #:go ,go-1.25))
+       #:go ,go-1.25
+       #:ldflags `("-X" ,(string-append "github.com/wakatime/wakatime-cli"
+                                        "/pkg/version.Version=" ,version))))
     (home-page "https://github.com/wakatime/wakatime-cli")
     (synopsis "CLI for WakaTime")
     (description
