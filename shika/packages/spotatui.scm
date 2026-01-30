@@ -15,7 +15,7 @@
 (define-public spotatui
   (package
     (name "spotatui")
-    (version "0.35.1")
+    (version "0.35.5")
     (source
      (origin
        (method git-fetch)
@@ -24,7 +24,7 @@
               (commit (string-append "v" version))))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "1cdlrawxrg76k2x2z5hcdlxsq5diwmma8356bh68dd9ldzaflfrs"))))
+        (base32 "0n8c7w8zz45f4j63y0x8rfv9prvrxs7l14ai573h8ynryavnrrkv"))))
     (build-system cargo-build-system)
     (native-inputs (list pkg-config))
     (inputs (cons* openssl alsa-lib (shika-cargo-inputs 'spotatui)))
