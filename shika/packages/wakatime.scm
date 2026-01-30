@@ -15,7 +15,7 @@
 (define-public wakatime-cli
   (package
     (name "wakatime-cli")
-    (version "1.137.1")
+    (version "1.139.1")
     (source
      (origin
        (method git-fetch)
@@ -24,7 +24,7 @@
               (commit (string-append "v" version))))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "0m2dg80q5a614c47p9my21j6zb4ryb6pvhgmxymi7m4hfjkmn9vs"))))
+        (base32 "0jf2cjjqv805hlf3zx8xgc5av13dfp3v901032f8bssgflaji8fa"))))
     (build-system nix-go-build-system)
     (native-inputs (list bats execline perl python))
     (arguments
