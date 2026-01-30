@@ -11,7 +11,7 @@
 (define-public reshade
   (package
     (name "reshade")
-    (version "6.6.2")
+    (version "6.7.1")
     (source
      (origin
        (method git-fetch)
@@ -20,7 +20,7 @@
               (commit (string-append "v" version))))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "09vwc3cfkxbifyhihy10b9xy0jspwrf8y3ghnv6vrh4cfrvjji0f"))))
+        (base32 "0d50jjz41zfrycwl2j0ywn9h031alzy1x1r5pw1pbybxm38l7acj"))))
     (build-system copy-build-system)
     (home-page "https://github.com/crosire/reshade")
     (synopsis "A generic post-processing injector for games and video software.")
