@@ -8,12 +8,13 @@
 ;;;
 ;;;   (service guix-gc-service-type
 ;;;            (guix-gc-configuration
-;;;             (schedule "0 2 * * *")        ;; At 02:00 daily
-;;;             (delete-generations "3d")))   ;; Delete generations older than 3 days
+;;;             (schedule "0 2 * * *")            ;; At 02:00 daily
+;;;             (delete-system-generations "14d") ;; Delete system generations older than 7d
+;;;             (delete-generations "3d")))       ;; Delete generations older than 3d
 ;;;
 ;;;   (service guix-gc-service-type
 ;;;            (guix-gc-configuration
-;;;             (delete-generations #f)))     ;; Just 'guix gc'
+;;;             (delete-generations #f)))         ;; Just 'guix gc'
 
 (define-module (shika services guix-gc)
   #:use-module (gnu services)
@@ -23,6 +24,7 @@
   #:export (guix-gc-configuration
             guix-gc-configuration?
             guix-gc-configuration-schedule
+            guix-gc-configuration-delete-system-generations
             guix-gc-configuration-delete-generations
             guix-gc-service-type))
 
@@ -31,16 +33,26 @@
   guix-gc-configuration?
   (schedule guix-gc-configuration-schedule
             (default "0 0 * * *"))
+  (delete-system-generations guix-gc-configuration-delete-system-generations
+                      (default #f))
   (delete-generations guix-gc-configuration-delete-generations
-                      (default "1d")))
+                      (default "7d")))
 
 (define (guix-gc-mcron-job config)
   (let ((schedule (guix-gc-configuration-schedule config))
+        (delete-system-generations (guix-gc-configuration-delete-system-generations config))
         (delete-generations (guix-gc-configuration-delete-generations config)))
-    (list #~(job #$schedule
-                 #$(if delete-generations
-                       #~(string-append "guix gc -d " #$delete-generations)
-                       #~"guix gc")))))
+    (list
+     #~(job #$schedule
+            #$(string-append
+               (if delete-system-generations
+                   (string-append "guix system delete-generations "
+                                  delete-system-generations " && ")
+                   "")
+               "guix gc"
+               (if delete-generations
+                   (string-append " --delete-generations=" delete-generations)
+                   ""))))))
 
 (define guix-gc-service-type
   (service-type
