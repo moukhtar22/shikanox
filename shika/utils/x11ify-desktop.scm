@@ -21,11 +21,11 @@
                             "XDG_SESSION_TYPE=x11"
                             "GDK_BACKEND=x11"
                             "QT_QPA_PLATFORM=xcb")))
-
             (copy-recursively #$pkg #$output)
             (when (directory-exists? apps-dir)
-              (for-each
-               (lambda (desktop-file)
-                 (substitute* desktop-file
-                   (("^Exec=") (string-join `("Exec=/usr/bin/env" ,@x11-envs "") " "))))
-               (find-files apps-dir "\\.desktop$")))))))))
+              (for-each (lambda (desktop-file)
+                          (substitute* desktop-file
+                            (("^Exec=")
+                             (string-join `("Exec=/usr/bin/env" ,@x11-envs "")
+                                          " "))))
+                        (find-files apps-dir "\\.desktop$")))))))))

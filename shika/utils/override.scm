@@ -8,15 +8,15 @@
   #:use-module (guix gexp)
   #:export (shika-git-override))
 
-(define* (shika-git-override
-          base
-          #:key
-          name
-          version
-          commit
-          url
-          hash
-          home-page)
+(define* (shika-git-override base
+                             #:key
+                             (name (package-name base))
+                             version
+                             commit
+                             (url (git-reference-url (origin-uri (package-source
+                                                                  base))))
+                             hash
+                             (home-page (package-home-page base)))
   (package
     (inherit base)
     (version (git-version version "0" commit))
@@ -25,11 +25,8 @@
        (method git-fetch)
        (uri (git-reference
               (commit commit)
-              (url (or url
-                       (git-reference-url
-                        (origin-uri
-                         (package-source base)))))))
-       (file-name (git-file-name (or name (package-name base))
-                                 version))
-       (sha256 (base32 hash))))
-    (home-page (or home-page (package-home-page base)))))
+              (url url)))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 hash))))
+    (home-page home-page)))
