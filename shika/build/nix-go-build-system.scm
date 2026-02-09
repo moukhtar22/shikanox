@@ -6,8 +6,7 @@
   #:use-module (guix build utils)
   #:use-module ((guix build gnu-build-system) #:prefix gnu:)
   #:use-module (srfi srfi-1)
-  #:export (%standard-phases
-            nix-go-build))
+  #:export (%standard-phases nix-go-build))
 
 (define* (setup-nix-go-environment #:key goos goarch #:allow-other-keys)
   (let ((tmpdir (or (getenv "TMPDIR") "/tmp")))
@@ -29,15 +28,17 @@
   (let ((vendor-dir (assoc-ref inputs "vendor")))
     (invoke "rm" "-rf" "vendor" "go.mod" "go.sum")
     (when (file-exists? (string-append vendor-dir "/go.mod"))
-      (symlink (string-append vendor-dir "/go.mod")
-               "go.mod"))
+      (symlink (string-append vendor-dir "/go.mod") "go.mod"))
     (when (file-exists? (string-append vendor-dir "/go.sum"))
-      (symlink (string-append vendor-dir "/go.sum")
-               "go.sum"))
-    (symlink (string-append vendor-dir "/vendor")
-             "vendor")))
+      (symlink (string-append vendor-dir "/go.sum") "go.sum"))
+    (symlink (string-append vendor-dir "/vendor") "vendor")))
 
-(define* (build #:key ldflags tags build-flags sub-packages #:allow-other-keys)
+(define* (build #:key
+                ldflags
+                tags
+                build-flags
+                sub-packages
+                #:allow-other-keys)
   (let ((tags (if (list? tags)
                   (list (string-append "-tags="
                                        (string-join tags ",")))
@@ -45,10 +46,11 @@
         (ldflags (list "-ldflags"
                        (if (list? ldflags)
                            (string-join (if (every (lambda (el)
-                                                     (not (string-prefix? "-buildid=" el))) ldflags)
-                                            (cons "-buildid=" ldflags)
-                                            ldflags) " ")
-                           "-buildid="))))
+                                                     (not (string-prefix?
+                                                           "-buildid=" el)))
+                                                   ldflags)
+                                            (cons "-buildid=" ldflags) ldflags)
+                                        " ") "-buildid="))))
     (for-each (lambda (pkg)
                 (apply invoke
                        `("go" "install" ,@build-flags ,@tags ,@ldflags ,pkg)))
@@ -63,10 +65,15 @@
       (mkdir-p bindir)
       (copy-recursively gobin bindir))))
 
-(define* (nix-go-build #:key inputs (phases %standard-phases)
+(define* (nix-go-build #:key
+                       inputs
+                       (phases %standard-phases)
                        #:allow-other-keys #:rest args)
   "Build the given Go package, applying all of PHASES in order."
-  (apply gnu:gnu-build #:inputs inputs #:phases phases args))
+  (apply gnu:gnu-build
+         #:inputs inputs
+         #:phases phases
+         args))
 
 (define %standard-phases
   (modify-phases gnu:%standard-phases
@@ -76,7 +83,7 @@
     (delete 'check)
     (replace 'build build)
     (replace 'install install)
-    (add-before 'unpack 'setup-nix-go-environment setup-nix-go-environment)
-    (add-after 'patch-source-shebangs 'symlink-vendor symlink-vendor)))
-
-
+    (add-before 'unpack 'setup-nix-go-environment
+      setup-nix-go-environment)
+    (add-after 'patch-source-shebangs 'symlink-vendor
+      symlink-vendor)))
