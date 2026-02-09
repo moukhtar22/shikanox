@@ -13,8 +13,10 @@
                              (name (package-name base))
                              version
                              commit
-                             (url (git-reference-url (origin-uri (package-source
-                                                                  base))))
+                             (url (let ((uri (origin-uri (package-source base))))
+                                    (if (git-reference? uri)
+                                        (git-reference-url uri)
+                                        uri)))
                              hash
                              (home-page (package-home-page base)))
   (package
