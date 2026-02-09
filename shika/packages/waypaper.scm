@@ -1,0 +1,77 @@
+;;; SPDX-FileCopyrightText: 2026 Nikita Mitasov <me@ch4og.com>
+;;; SPDX-License-Identifier: GPL-3.0-or-later
+
+(define-module (shika packages waypaper)
+  #:use-module (guix download)
+  #:use-module (guix gexp)
+  #:use-module (guix packages)
+  #:use-module (guix build-system pyproject)
+  #:use-module (guix build-system python)
+  #:use-module (gnu packages check)
+  #:use-module (gnu packages glib)
+  #:use-module (gnu packages gtk)
+  #:use-module (gnu packages python-build)
+  #:use-module (gnu packages python-xyz)
+  #:use-module ((guix licenses) #:prefix license:))
+
+(define python-screeninfo
+  (package
+    (name "python-screeninfo")
+    (version "0.8.1")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (pypi-uri "screeninfo" version))
+       (sha256
+        (base32
+         "1l9frlckb9zbwx5kngxv5byi353jyfmpskcy38m40d3yrimhg0wr"))))
+    (build-system pyproject-build-system)
+    (arguments
+     (list #:tests? #f))
+    (native-inputs (list python-poetry-core))
+    (home-page "https://github.com/rr-/screeninfo")
+    (synopsis "Fetch location and size of physical screens.")
+    (description synopsis)
+    (license license:expat)))
+
+(define-public waypaper
+  (package
+    (name "waypaper")
+    (version "2.7")
+    (source (origin
+              (method url-fetch)
+              (uri (pypi-uri name version))
+              (sha256
+               (base32
+                "1ifz3rh395yixn39caq0gjacy5gqlan0m21b8k4fyh6fk6cm7k1g"))))
+    (build-system pyproject-build-system)
+    (arguments
+     (list
+      #:tests? #f ;; Tests do not exist.
+      #:phases
+      #~(modify-phases %standard-phases
+          (delete 'sanity-check) ;; Won't work for GUI app.
+          (add-after 'wrap 'wrap-gi
+            (lambda* (#:key inputs #:allow-other-keys)
+              (let* ((gtk+ (assoc-ref inputs "gtk+"))
+                     (bin  (string-append #$output "/bin/waypaper")))
+                (wrap-program bin
+                  `("GI_TYPELIB_PATH" ":" prefix
+                    (,(string-append gtk+ "/lib/girepository-1.0"))))))))))
+    (native-inputs (list python-setuptools))
+    (inputs (list gdk-pixbuf
+                  gtk+
+                  python-imageio
+                  python-imageio-ffmpeg
+                  python-platformdirs
+                  python-pygobject
+                  python-screeninfo))
+    (home-page "https://anufrievroman.gitbook.io/waypaper")
+    (synopsis "GUI wallpaper manager for Wayland and Xorg Linux systems")
+    (description
+     "GUI wallpaper setter for Wayland and Xorg window managers.
+It works as a frontend for popular wallpaper backends like swaybg, awww,
+swww, wallutils, hyprpaper, mpvpaper, xwallpaper and feh.")
+    (license license:gpl3)))
+
+waypaper
