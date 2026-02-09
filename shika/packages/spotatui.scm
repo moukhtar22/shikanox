@@ -27,11 +27,17 @@
         (base32 "0n8c7w8zz45f4j63y0x8rfv9prvrxs7l14ai573h8ynryavnrrkv"))))
     (build-system cargo-build-system)
     (native-inputs (list pkg-config))
-    (inputs (cons* openssl alsa-lib (shika-cargo-inputs 'spotatui)))
-    (arguments (list #:rust rust-1.88))
+    (inputs (cons* openssl
+                   alsa-lib
+                   (shika-cargo-inputs 'spotatui)))
+    (arguments
+     (list
+      #:rust rust-1.88))
     (home-page "https://github.com/LargeModGames/spotatui")
-    (synopsis "A Spotify client for the terminal written in Rust, powered by Ratatui.")
-    (description "A fully standalone Spotify client for the terminal. Native streaming included, no daemon required.")
+    (synopsis
+     "A Spotify client for the terminal written in Rust, powered by Ratatui.")
+    (description
+     "A fully standalone Spotify client for the terminal. Native streaming included, no daemon required.")
     (license license:expat)))
 
 spotatui

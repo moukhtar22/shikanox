@@ -14,12 +14,12 @@
   (package
     (name "rofi-rbw")
     (version "1.5.1")
-    (source (origin
-              (method url-fetch)
-              (uri (pypi-uri "rofi_rbw" version))
-              (sha256
-               (base32
-                "06xc1l791mc18gddq4rbf13j1s24xv4jj8570mjxcknbjrfn59y6"))))
+    (source
+     (origin
+       (method url-fetch)
+       (uri (pypi-uri "rofi_rbw" version))
+       (sha256
+        (base32 "06xc1l791mc18gddq4rbf13j1s24xv4jj8570mjxcknbjrfn59y6"))))
     (build-system pyproject-build-system)
     (native-inputs (list python-hatchling))
     (inputs (list python-configargparse))

@@ -32,7 +32,8 @@
                      (shika-cargo-inputs 'wayfreeze)))
       (home-page "https://github.com/Jappie3/wayfreeze")
       (synopsis "Tool to freeze the screen of a Wayland compositor")
-      (description "A small CLI tool to freeze the screen of a
+      (description
+       "A small CLI tool to freeze the screen of a
 wlroots compositor, this can be useful to, for example, take a screenshot.
 Supports multiple monitors & fractional scaling.")
       (license license:agpl3))))

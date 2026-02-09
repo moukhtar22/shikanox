@@ -23,12 +23,11 @@
        (method url-fetch)
        (uri (pypi-uri "screeninfo" version))
        (sha256
-        (base32
-         "1l9frlckb9zbwx5kngxv5byi353jyfmpskcy38m40d3yrimhg0wr"))))
+        (base32 "1l9frlckb9zbwx5kngxv5byi353jyfmpskcy38m40d3yrimhg0wr"))))
     (build-system pyproject-build-system)
     (arguments
      (list
-      #:tests? #f)) ;; Tests do not exist.
+      #:tests? #f)) ;Tests do not exist.
     (native-inputs (list python-poetry-core))
     (home-page "https://github.com/rr-/screeninfo")
     (synopsis "Fetch location and size of physical screens.")
@@ -39,16 +38,16 @@
   (package
     (name "waypaper")
     (version "2.7")
-    (source (origin
-              (method url-fetch)
-              (uri (pypi-uri name version))
-              (sha256
-               (base32
-                "1ifz3rh395yixn39caq0gjacy5gqlan0m21b8k4fyh6fk6cm7k1g"))))
+    (source
+     (origin
+       (method url-fetch)
+       (uri (pypi-uri name version))
+       (sha256
+        (base32 "1ifz3rh395yixn39caq0gjacy5gqlan0m21b8k4fyh6fk6cm7k1g"))))
     (build-system pyproject-build-system)
     (arguments
      (list
-      #:tests? #f ;; Tests do not exist.
+      #:tests? #f ;Tests do not exist.
       #:imported-modules `((guix build glib-or-gtk-build-system)
                            ,@%pyproject-build-system-modules)
       #:modules '((guix build pyproject-build-system)
@@ -56,14 +55,14 @@
                   ((guix build glib-or-gtk-build-system) #:prefix gtk:))
       #:phases
       #~(modify-phases %standard-phases
-          (delete 'sanity-check) ;; Won't work and not needed for GUI app.
+          (delete 'sanity-check) ;Won't work and not needed for GUI app.
           (add-after 'wrap 'glib-or-gtk-wrap
             (assoc-ref gtk:%standard-phases 'glib-or-gtk-wrap))
           (add-after 'wrap 'wrap-gi
             (lambda _
               (let* ((waypaper (string-append #$output "/bin/waypaper"))
-                    (gtk+      #$(this-package-input "gtk+"))
-                    (gtk+_gi   (string-append gtk+ "/lib/girepository-1.0")))
+                     (gtk+ #$(this-package-input "gtk+"))
+                     (gtk+_gi (string-append gtk+ "/lib/girepository-1.0")))
                 (wrap-program waypaper
                   `("GI_TYPELIB_PATH" ":" prefix (,gtk+_gi)))))))))
     (native-inputs (list python-setuptools))

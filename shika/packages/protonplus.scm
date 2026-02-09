@@ -31,7 +31,9 @@
        (sha256
         (base32 "09mbkdy49rlikwh1nz8a5215sl3g85gxanykcinfmjnalqa0ynjl"))))
     (build-system meson-build-system)
-    (arguments (list #:glib-or-gtk? #t))
+    (arguments
+     (list
+      #:glib-or-gtk? #t))
     (native-inputs (list gettext-minimal
                          `(,glib "bin")
                          pkg-config
@@ -55,16 +57,18 @@ It works with Steam, Lutris, Heroic Games Launcher and Bottles. It uses GTK4.")
   (package
     (inherit protonplus)
     (name "protonplus-sandbox")
-    (arguments (list #:glib-or-gtk? #t
-                     #:phases
-                     #~(modify-phases %standard-phases
-                         (add-after 'install 'set-home
-                           (lambda _
-                             (let* ((bin (string-append #$output "/bin/protonplus"))
-                                    (new-home "$HOME/.local/share/guix-sandbox-home/"))
-                               (wrap-program bin
-                                 `("HOME" =
-                                   (,(string-append "${GUIX_SANDBOX_HOME:-" new-home "}"))))))))))
+    (arguments
+     (list
+      #:glib-or-gtk? #t
+      #:phases
+      #~(modify-phases %standard-phases
+          (add-after 'install 'set-home
+            (lambda _
+              (let* ((bin (string-append #$output "/bin/protonplus"))
+                     (new-home "$HOME/.local/share/guix-sandbox-home/"))
+                (wrap-program bin
+                  `("HOME" =
+                    (,(string-append "${GUIX_SANDBOX_HOME:-" new-home "}"))))))))))
     (synopsis "Simple Wine and Proton-based compatibility tools manager.
 Patched for nonguix container path.")))
 

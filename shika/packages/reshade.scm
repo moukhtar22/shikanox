@@ -23,7 +23,8 @@
         (base32 "0d50jjz41zfrycwl2j0ywn9h031alzy1x1r5pw1pbybxm38l7acj"))))
     (build-system copy-build-system)
     (home-page "https://github.com/crosire/reshade")
-    (synopsis "A generic post-processing injector for games and video software.")
+    (synopsis
+     "A generic post-processing injector for games and video software.")
     (description
      "This is a generic post-processing injector for games
 and video software. It exposes an automated way to access

@@ -18,14 +18,14 @@
 (define (fmt)
   "Format code"
   ($ `("find" ,(string-append config-root "/shika") "-type f -name '*.scm'"
-       "-exec emacs --batch {} --eval '(progn (indent-region (point-min) (point-max)) (save-buffer))' \\;")
+       "-exec guix style -f {} \\;")
      #:verbose? #t))
 
 (define (default)
   ($ `(,(current-filename) "--list")
      #:verbose? #t))
 
-(define (update)
+(define (up)
   "Update packages"
   (for-each (lambda (name)
               (format #t "Refreshing ~a~%" name)
@@ -38,5 +38,4 @@
                               (- (string-length f) 4)))
                  (filter (lambda (f)
                            (string-suffix? ".scm" f))
-                         (scandir (string-append config-root
-                                                 "/shika/packages"))))))
+                         (scandir (string-append config-root "/shika/packages"))))))

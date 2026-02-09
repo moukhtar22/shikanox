@@ -47,44 +47,44 @@ complexity/hastle away from you! It's so simple!")
       (license (list license:asl2.0 license:expat)))))
 
 (define wlroots-for-gamescope
-  (shika-git-override
-   wlroots
-   #:version "0.18.0"
-   #:commit "54e844748029d4874e14d0c086d50092c04c8899"
-   #:url "https://github.com/misyltoad/wlroots"
-   #:hash "0sxgs157nzm6bkfyzh4dnl9zajg2bq1m1kq09xpxi2lm8ran3g05"
-   #:home-page "https://github.com/misyltoad/wlroots"))
+  (shika-git-override wlroots
+                      #:version "0.18.0"
+                      #:commit "54e844748029d4874e14d0c086d50092c04c8899"
+                      #:url "https://github.com/misyltoad/wlroots"
+                      #:hash
+                      "0sxgs157nzm6bkfyzh4dnl9zajg2bq1m1kq09xpxi2lm8ran3g05"
+                      #:home-page "https://github.com/misyltoad/wlroots"))
 
 (define reshade-for-gamescope
-  (shika-git-override
-   reshade
-   #:version "6.1.1"
-   #:commit "696b14cd6006ae9ca174e6164450619ace043283"
-   #:url "https://github.com/misyltoad/reshade"
-   #:hash "1zvhf3pgd8bhn8bynrsh725xn1dszsf05j8c9g6zabgv7vnz04a5"
-   #:home-page "https://github.com/misyltoad/reshade"))
+  (shika-git-override reshade
+                      #:version "6.1.1"
+                      #:commit "696b14cd6006ae9ca174e6164450619ace043283"
+                      #:url "https://github.com/misyltoad/reshade"
+                      #:hash
+                      "1zvhf3pgd8bhn8bynrsh725xn1dszsf05j8c9g6zabgv7vnz04a5"
+                      #:home-page "https://github.com/misyltoad/reshade"))
 
 (define spirv-headers-for-gamescope
-  (shika-git-override
-   spirv-headers
-   #:version "1.3.261"
-   #:commit "d790ced752b5bfc06b6988baadef6eb2d16bdf96"
-   #:hash "1zzkqbqysiv52dk92i35gsyppnasln3d27b4rqv590zknk5g38is"))
+  (shika-git-override spirv-headers
+                      #:version "1.3.261"
+                      #:commit "d790ced752b5bfc06b6988baadef6eb2d16bdf96"
+                      #:hash
+                      "1zzkqbqysiv52dk92i35gsyppnasln3d27b4rqv590zknk5g38is"))
 
 (define openvr-for-gamescope
-  (shika-git-override
-   openvr
-   #:version "2.12.1"
-   #:commit "ff87f683f41fe26cc9353dd9d9d7028357fd8e1a"
-   #:hash "0ds605hi4v5l7cly2dbydx20257dwjm216ig0vr6aswq37a8vl29"))
+  (shika-git-override openvr
+                      #:version "2.12.1"
+                      #:commit "ff87f683f41fe26cc9353dd9d9d7028357fd8e1a"
+                      #:hash
+                      "0ds605hi4v5l7cly2dbydx20257dwjm216ig0vr6aswq37a8vl29"))
 
 ;; guix has 0.5.0 too but we will lock it
 (define libliftoff-for-gamescope
-  (shika-git-override
-   libliftoff
-   #:version "0.5.0"
-   #:commit "8b08dc1c14fd019cc90ddabe34ad16596b0691f4"
-   #:hash "163g8ndsbma7acy2k9mrnvlpb7yi4431hgkx1gygkafgwpq1ii1x"))
+  (shika-git-override libliftoff
+                      #:version "0.5.0"
+                      #:commit "8b08dc1c14fd019cc90ddabe34ad16596b0691f4"
+                      #:hash
+                      "163g8ndsbma7acy2k9mrnvlpb7yi4431hgkx1gygkafgwpq1ii1x"))
 
 (define-public gamescope
   (package
@@ -100,8 +100,7 @@ complexity/hastle away from you! It's so simple!")
        (sha256
         (base32 "153wiyr48fanm3yialic8hjic4vmprzpj6p503jvqai45lm9rqqv"))))
     (build-system meson-build-system)
-    (native-inputs (list bash-minimal
-                         pkg-config))
+    (native-inputs (list bash-minimal pkg-config))
     (inputs (list eudev
                   glm
                   glslang
@@ -141,17 +140,18 @@ complexity/hastle away from you! It's so simple!")
           (add-before 'configure 'guix-fake-git
             (lambda _
               (let ((bin (string-append (getcwd) "/.fake-bin"))
-                    (sh  (string-append #$bash-minimal "/bin/sh")))
+                    (sh (string-append #$bash-minimal "/bin/sh")))
                 (mkdir-p bin)
                 (call-with-output-file (string-append bin "/git")
                   (lambda (p)
                     (format p "#!~a\nexec echo ~a\n" sh #$version)))
                 (chmod (string-append bin "/git") #o755)
-                (setenv "PATH" (string-append bin ":" (getenv "PATH")))))) 
-          
+                (setenv "PATH"
+                        (string-append bin ":" (getenv "PATH"))))))
+
           (add-after 'unpack 'inject-reshade
             (lambda* (#:key inputs #:allow-other-keys)
-              (let ((reshade       (assoc-ref inputs "reshade"))
+              (let ((reshade (assoc-ref inputs "reshade"))
                     (spirv-headers (assoc-ref inputs "spirv-headers")))
                 (copy-recursively reshade "src/reshade")
                 (copy-recursively spirv-headers "thirdparty/SPIRV-Headers"))))
@@ -162,7 +162,7 @@ complexity/hastle away from you! It's so simple!")
                 ;; we are pinning deps to same commits as upstream
                 ;; so we don't have problem removing this note made for packagers
                 (("'force_fallback_for=wlroots,libliftoff,vkroots',\n")
-                 "") 
+                 "")
                 (("error\\('!!!\"force_fallback_for\".*\n")
                  ""))))
 
@@ -174,7 +174,7 @@ complexity/hastle away from you! It's so simple!")
 
                 (("glm_dep = glm_proj.get_variable\\('glm_dep'\\)\n")
                  "glm_dep = dependency('glm', required: true)\n"))))
-          
+
           (add-after 'use-guix-glm 'use-guix-openvr
             (lambda* _
               (substitute* "meson.build"
@@ -183,12 +183,12 @@ complexity/hastle away from you! It's so simple!")
 
                 (("openvr_dep = openvr_proj.dependency\\('openvr_api'\\)")
                  "openvr_dep = dependency('openvr', required:true)"))))
-          
+
           (add-after 'use-guix-openvr 'use-guix-stb
             (lambda* (#:key inputs #:allow-other-keys)
-              (let ((stb-image        (assoc-ref inputs "stb-image"))
+              (let ((stb-image (assoc-ref inputs "stb-image"))
                     (stb-image-resize (assoc-ref inputs "stb-image-resize"))
-                    (stb-image-write  (assoc-ref inputs "stb-image-write")))
+                    (stb-image-write (assoc-ref inputs "stb-image-write")))
                 (substitute* "meson.build"
                   (("stb_proj = subproject\\('stb'\\)\n")
                    "")
@@ -201,7 +201,7 @@ complexity/hastle away from you! It's so simple!")
                     "    include_directories('" stb-image-resize "/include'),\n"
                     "    include_directories('" stb-image-write "/include')\n"
                     "  ]\n"
-                    ")\n"))))))))) 
+                    ")\n")))))))))
 
     (home-page "https://github.com/ValveSoftware/gamescope")
     (synopsis "SteamOS session compositing window manager")

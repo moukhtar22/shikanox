@@ -25,7 +25,8 @@
     (inputs (shika-cargo-inputs 'wl-clip-persist))
     (home-page "https://github.com/Linus789/wl-clip-persist")
     (synopsis "Keep Wayland clipboard even after programs close")
-    (description "Normally, when you copy something on Wayland and then close
+    (description
+     "Normally, when you copy something on Wayland and then close
 the application you copied from, the copied data (e.g. text) disappears and you
 cannot paste it anymore. If you run wl-clip-persist in the background, however,
 the copied data persists.")

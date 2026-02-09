@@ -46,7 +46,8 @@
                    (shika-cargo-inputs 'satty)))
     (home-page "https://github.com/Satty-org/Satty")
     (synopsis "Modern Screenshot Annotation.")
-    (description "Modern screenshot annotation tool, inspired by Swappy and Flameshot.")
+    (description
+     "Modern screenshot annotation tool, inspired by Swappy and Flameshot.")
     (license license:mpl2.0)))
 
 satty

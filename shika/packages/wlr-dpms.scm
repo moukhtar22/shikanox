@@ -38,14 +38,15 @@
                 (let ((gcc (which "gcc")))
                   (when gcc
                     (symlink gcc "cc")
-                    (setenv "PATH" (string-append (getcwd) ":" (getenv "PATH")))))))
+                    (setenv "PATH"
+                            (string-append (getcwd) ":" (getenv "PATH")))))))
             (delete 'configure)
-            (delete 'check)
-            )))
+            (delete 'check))))
       (native-inputs (list pkg-config wayland gcc-toolchain))
       (home-page "https://git.sr.ht/~dsemy/wlr-dpms")
       (synopsis "'xset dpms on|off' for wlroots compositors")
-      (description "Change output power modes in wlroots compositors")
+      (description
+       "Change output power modes in wlroots compositors")
       (license license:expat))))
 
 wlr-dpms

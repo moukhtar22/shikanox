@@ -37,7 +37,8 @@
               (let ((gcc (which "gcc")))
                 (when gcc
                   (symlink gcc "cc")
-                  (setenv "PATH" (string-append (getcwd) ":" (getenv "PATH")))))))
+                  (setenv "PATH"
+                          (string-append (getcwd) ":" (getenv "PATH")))))))
           (delete 'configure)
           (delete 'check)
           (replace 'install
@@ -51,18 +52,17 @@
                 (for-each (lambda (file)
                             (chmod file #o755))
                           (find-files bin))))))))
-    (native-inputs 
-     (list pkg-config gcc-toolchain))
-    (inputs
-     (list openssl
-           zlib
-           libmnl
-           libnetfilter-queue
-           libnfnetlink
-           libcap))
+    (native-inputs (list pkg-config gcc-toolchain))
+    (inputs (list openssl
+                  zlib
+                  libmnl
+                  libnetfilter-queue
+                  libnfnetlink
+                  libcap))
     (home-page "https://github.com/bol-van/zapret")
     (synopsis "DPI bypass multi platform tool")
-    (description "Autonomous countermeasure against DPI")
+    (description
+     "Autonomous countermeasure against DPI")
     (license license:expat)))
 
 zapret

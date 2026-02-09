@@ -14,15 +14,15 @@
     (inherit xdg-desktop-portal-wlr)
     (name "xdg-desktop-portal-wlr")
     (version "0.8.1")
-    (source (origin
-              (method git-fetch)
-              (uri (git-reference
-                     (url "https://github.com/emersion/xdg-desktop-portal-wlr")
-                     (commit (string-append "v" version))))
-              (file-name (git-file-name name version))
-              (sha256
-               (base32
-                "0dm9zbg91h7rq3ks00brfmc3yhdlsfa4059np34xcabikdyp0nqn"))
-              (patches (search-patches "xdg-desktop-portal-wlr-harcoded-length.patch"))))))
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+              (url "https://github.com/emersion/xdg-desktop-portal-wlr")
+              (commit (string-append "v" version))))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "0dm9zbg91h7rq3ks00brfmc3yhdlsfa4059np34xcabikdyp0nqn"))
+       (patches (search-patches "xdg-desktop-portal-wlr-harcoded-length.patch"))))))
 
 xdg-desktop-portal-wlr-1

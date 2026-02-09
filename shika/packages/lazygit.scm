@@ -7,8 +7,7 @@
   #:use-module (guix git-download)
   #:use-module (gnu packages golang)
   #:use-module (gnu packages version-control)
-  #:use-module ((guix licenses)
-                #:prefix license:))
+  #:use-module ((guix licenses) #:prefix license:))
 
 (define-public lazygit
   (package
@@ -32,7 +31,8 @@
     (propagated-inputs (list git-minimal))
     (home-page "https://github.com/jesseduffield/lazygit")
     (synopsis "Simple terminal UI for git commands")
-    (description "Simple terminal UI for git commands")
+    (description
+     "Simple terminal UI for git commands")
     (license license:expat)))
 
 lazygit

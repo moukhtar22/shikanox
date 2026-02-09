@@ -32,9 +32,7 @@
        (sha256
         (base32 "0nryrzvphf878y9lpgx3zbm126qqnf4y65qv3rvzhpdj00w100y4"))))
     (build-system meson-build-system)
-    (native-inputs (list check
-                         libxkbcommon
-                         pkg-config))
+    (native-inputs (list check libxkbcommon pkg-config))
     (home-page "https://github.com/kmscon/libtsm")
     (synopsis "Terminal-emulator State Machine")
     (description
@@ -57,15 +55,13 @@ compatibility to existing emulators like xterm, gnome-terminal, konsole, etc.")
        (sha256
         (base32 "0dspyvjljd23xb1j32ivpvbhpwh4bgm15wgjkywblfnr6rjfmq1j"))))
     (build-system meson-build-system)
-    (native-inputs (list pkg-config
-                         libxslt
-                         docbook-xsl))
+    (native-inputs (list docbook-xsl libxslt pkg-config))
     (inputs (list check
-                  libxkbcommon
                   elogind
-                  libtsm
                   eudev
                   libdrm
+                  libtsm
+                  libxkbcommon
                   mesa
                   pango))
     (home-page "https://github.com/kmscon/kmscon")

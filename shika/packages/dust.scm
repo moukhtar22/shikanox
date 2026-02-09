@@ -25,8 +25,8 @@
     (inputs (shika-cargo-inputs 'dust))
     (home-page "https://github.com/bootandy/dust")
     (synopsis "A more intuitive version of du in rust")
-    (description "du + rust = dust. Like du but more intuitive.")
+    (description
+     "du + rust = dust. Like du but more intuitive.")
     (license license:asl2.0)))
 
 dust
-
