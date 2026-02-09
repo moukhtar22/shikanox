@@ -27,7 +27,8 @@
          "1l9frlckb9zbwx5kngxv5byi353jyfmpskcy38m40d3yrimhg0wr"))))
     (build-system pyproject-build-system)
     (arguments
-     (list #:tests? #f))
+     (list
+      #:tests? #f)) ;; Tests do not exist.
     (native-inputs (list python-poetry-core))
     (home-page "https://github.com/rr-/screeninfo")
     (synopsis "Fetch location and size of physical screens.")
@@ -50,14 +51,14 @@
       #:tests? #f ;; Tests do not exist.
       #:phases
       #~(modify-phases %standard-phases
-          (delete 'sanity-check) ;; Won't work for GUI app.
+          (delete 'sanity-check) ;; Won't work and not needed for GUI app.
           (add-after 'wrap 'wrap-gi
-            (lambda* (#:key inputs #:allow-other-keys)
-              (let* ((gtk+ (assoc-ref inputs "gtk+"))
-                     (bin  (string-append #$output "/bin/waypaper")))
-                (wrap-program bin
-                  `("GI_TYPELIB_PATH" ":" prefix
-                    (,(string-append gtk+ "/lib/girepository-1.0"))))))))))
+            (lambda _
+              (let* ((waypaper (string-append #$output "/bin/waypaper"))
+                    (gtk+      #$(this-package-input "gtk+"))
+                    (gtk+_gi   (string-append gtk+ "/lib/girepository-1.0")))
+                (wrap-program waypaper
+                  `("GI_TYPELIB_PATH" ":" prefix (,gtk+_gi)))))))))
     (native-inputs (list python-setuptools))
     (inputs (list gdk-pixbuf
                   gtk+
