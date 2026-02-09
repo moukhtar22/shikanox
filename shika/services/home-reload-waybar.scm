@@ -13,16 +13,14 @@
   #:use-module (guix gexp))
 
 (define-public home-reload-waybar-service-type
-  (service-type
-    (name 'home-reload-waybar)
-    (description "Reload waybar configuration")
-    (extensions
-     (list
-      (service-extension home-activation-service-type
-                         (lambda _
-                           #~(begin
-                               (use-modules (guix gexp))
-                               (invoke "pgrep" "waybar")
-                               (invoke "killall" "-SIGUSR2" "waybar"))))))
-    (default-value #f)))
-
+  (service-type (name 'home-reload-waybar)
+                (description
+                 "Reload waybar configuration")
+                (extensions (list (service-extension
+                                   home-activation-service-type
+                                   (lambda _
+                                     #~(begin
+                                         (use-modules (guix gexp))
+                                         (invoke "pgrep" "waybar")
+                                         (invoke "killall" "-SIGUSR2" "waybar"))))))
+                (default-value #f)))

@@ -29,19 +29,20 @@
 
 (define (udev-fido2-accounts config)
   (map (lambda (group)
-         (user-group (name group) (system? #t)))
+         (user-group
+           (name group)
+           (system? #t)))
        (udev-fido2-configuration-groups config)))
 
 (define (udev-fido2-rules config)
   (list libfido2))
 
 (define-public udev-fido2-service-type
-  (service-type
-    (name 'udev-fido2)
-    (description "Udev rules for FIDO2 security keys.")
-    (extensions
-     (list (service-extension udev-service-type
-                              udev-fido2-rules)
-           (service-extension account-service-type
-                              udev-fido2-accounts)))
-    (default-value (udev-fido2-configuration))))
+  (service-type (name 'udev-fido2)
+                (description
+                 "Udev rules for FIDO2 security keys.")
+                (extensions (list (service-extension udev-service-type
+                                                     udev-fido2-rules)
+                                  (service-extension account-service-type
+                                                     udev-fido2-accounts)))
+                (default-value (udev-fido2-configuration))))

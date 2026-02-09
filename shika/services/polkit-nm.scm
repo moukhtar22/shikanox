@@ -28,29 +28,25 @@
          (default "netdev")))
 
 (define (polkit-network-manager-package config)
-  (let ((group (polkit-network-manager-configuration-group config)))
-    (file-union
-     "polkit-wheel"
-     `(("share/polkit-1/rules.d/org.freedesktop.NetworkManager.rules"
-        ,(plain-file
-          "org.freedesktop.NetworkManager.rules"
-          (string-join
-           `("polkit.addRule(function(action, subject) {"
-             "  if (action.id == \"org.freedesktop.NetworkManager.settings.modify.system\" &&"
-             ,(string-append "	subject.local && subject.active && subject.isInGroup (\"" group "\")) {")
-             "    return polkit.Result.YES;"
-             "  }"
-             "});")
-           "\n")))))))
+  (let ((group (polkit-network-manager-configuration-group config))
+        (action-id "org.freedesktop.NetworkManager.settings.modify.system"))
+    (file-union "polkit-wheel"
+                `(("share/polkit-1/rules.d/org.freedesktop.NetworkManager.rules"
+                   ,(plain-file "org.freedesktop.NetworkManager.rules"
+                                (string-append
+                                 "polkit.addRule(function(action, subject) {\n"
+                                 "  if (action.id == \"" action-id "\" &&"
+                                 " subject.local && subject.active &&"
+                                 " subject.isInGroup (\"" group "\")) {\n"
+                                 "    return polkit.Result.YES;\n"
+                                 "  }\n"
+                                 "});")))))))
 
 (define-public polkit-network-manager-service-type
-  (service-type
-    (name 'polkit-network-manager)
-    (extensions
-     (list (service-extension
-            polkit-service-type
-            (lambda (config)
-              `(,(polkit-network-manager-package config))))))
-    (default-value (polkit-network-manager-configuration))
-    (description
-     "Allow users from specified group to modify NetworkManager settings")))
+  (service-type (name 'polkit-network-manager)
+                (extensions (list (service-extension polkit-service-type
+                                                     (lambda (config)
+                                                       `(,(polkit-network-manager-package config))))))
+                (default-value (polkit-network-manager-configuration))
+                (description
+                 "Allow users from specified group to modify NetworkManager settings")))

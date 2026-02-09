@@ -27,26 +27,23 @@
 
 (define (runtime-dir-shepherd-services config)
   (let ((uid (runtime-dir-configuration-uid config)))
-    (list
-     (shepherd-service
-       (documentation "Create XDG runtime dir.")
-       (provision '(runtime-dir))
-       (requirement '(seatd))
-       (start
-        #~(lambda _
-            (let* ((uid #$uid)
-                   (dir (string-append "/run/user/" uid)))
-              (unless (file-exists? dir)
-                (mkdir-p dir))
-              (system* "chown" "-R" (string-append uid ":" uid) dir)
-              (chmod dir #o700))))
-       (one-shot? #t)))))
+    (list (shepherd-service (documentation "Create XDG runtime dir.")
+                            (provision '(runtime-dir))
+                            (requirement '(seatd))
+                            (start #~(lambda _
+                                       (let* ((uid #$uid)
+                                              (dir (string-append "/run/user/" uid))
+                                              (uid:uid (string-join '(,uid ,uid) ":")))
+                                         (unless (file-exists? dir) (mkdir-p dir))
+                                         (system* "chown" "-R" uid:uid dir)
+                                         (chmod dir #o700))))
+                            (one-shot? #t)))))
 
 (define-public runtime-dir-service-type
-  (service-type
-    (name 'runtime-dir)
-    (extensions
-     (list (service-extension shepherd-root-service-type
-                              runtime-dir-shepherd-services)))
-    (default-value (runtime-dir-configuration))
-    (description "Create XDG runtime dir.")))
+  (service-type (name 'runtime-dir)
+                (extensions (list (service-extension
+                                   shepherd-root-service-type
+                                   runtime-dir-shepherd-services)))
+                (default-value (runtime-dir-configuration))
+                (description
+                 "Create XDG runtime dir.")))

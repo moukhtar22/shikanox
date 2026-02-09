@@ -12,10 +12,10 @@
   #:use-module (guix records))
 
 (define-public ntsync-service-type
-  (service-type
-    (name 'ntsync)
-    (description "Load ntsync kernel module.")
-    (extensions
-     (list (service-extension kernel-module-loader-service-type
-                              (const '("ntsync")))))
-    (default-value #f)))
+  (service-type (name 'ntsync)
+                (description
+                 "Load ntsync kernel module.")
+                (extensions (list (service-extension
+                                   kernel-module-loader-service-type
+                                   (const '("ntsync")))))
+                (default-value #f)))

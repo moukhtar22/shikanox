@@ -34,7 +34,7 @@
   (schedule guix-gc-configuration-schedule
             (default "0 0 * * *"))
   (delete-system-generations guix-gc-configuration-delete-system-generations
-                      (default #f))
+                             (default #f))
   (delete-generations guix-gc-configuration-delete-generations
                       (default "7d")))
 
@@ -42,23 +42,20 @@
   (let ((schedule (guix-gc-configuration-schedule config))
         (delete-system-generations (guix-gc-configuration-delete-system-generations config))
         (delete-generations (guix-gc-configuration-delete-generations config)))
-    (list
-     #~(job #$schedule
-            #$(string-append
-               (if delete-system-generations
-                   (string-append "guix system delete-generations "
-                                  delete-system-generations " && ")
-                   "")
-               "guix gc"
-               (if delete-generations
-                   (string-append " --delete-generations=" delete-generations)
-                   ""))))))
+    (list #~(job #$schedule
+                 #$(string-append (if delete-system-generations
+                                      (string-append
+                                       "guix system delete-generations "
+                                       delete-system-generations " && ") "")
+                                  "guix gc"
+                                  (if delete-generations
+                                      (string-append " --delete-generations=" delete-generations)
+                                      ""))))))
 
 (define guix-gc-service-type
-  (service-type
-    (name 'guix-gc)
-    (description "Automatic Guix garbage collection service using mcron.")
-    (extensions
-     (list (service-extension mcron-service-type
-                              guix-gc-mcron-job)))
-    (default-value (guix-gc-configuration))))
+  (service-type (name 'guix-gc)
+                (description
+                 "Automatic Guix garbage collection service using mcron.")
+                (extensions (list (service-extension mcron-service-type
+                                                     guix-gc-mcron-job)))
+                (default-value (guix-gc-configuration))))
