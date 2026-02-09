@@ -49,9 +49,16 @@
     (arguments
      (list
       #:tests? #f ;; Tests do not exist.
+      #:imported-modules `((guix build glib-or-gtk-build-system)
+                           ,@%pyproject-build-system-modules)
+      #:modules '((guix build pyproject-build-system)
+                  (guix build utils)
+                  ((guix build glib-or-gtk-build-system) #:prefix gtk:))
       #:phases
       #~(modify-phases %standard-phases
           (delete 'sanity-check) ;; Won't work and not needed for GUI app.
+          (add-after 'wrap 'glib-or-gtk-wrap
+            (assoc-ref gtk:%standard-phases 'glib-or-gtk-wrap))
           (add-after 'wrap 'wrap-gi
             (lambda _
               (let* ((waypaper (string-append #$output "/bin/waypaper"))
