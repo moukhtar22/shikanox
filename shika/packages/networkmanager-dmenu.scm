@@ -14,7 +14,7 @@
 (define-public networkmanager-dmenu
   (package
     (name "networkmanager-dmenu")
-    (version "2.6.2")
+    (version "2.6.3")
     (source
      (origin
        (method git-fetch)
@@ -23,7 +23,7 @@
               (commit (string-append "v" version))))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "1r57znpd3rkrm836jw2wb1fx82p724r85n8jb1chzi3p8qlhcf9m"))))
+        (base32 "06qw8xyrnkjgcnidgy9qly94289yjczzmg9wpsvbmpssd3p8x5ig"))))
     (build-system copy-build-system)
 
     (inputs (list network-manager glib bash-minimal))
