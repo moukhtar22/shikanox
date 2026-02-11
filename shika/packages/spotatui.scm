@@ -15,7 +15,7 @@
 (define-public spotatui
   (package
     (name "spotatui")
-    (version "0.35.5")
+    (version "0.35.7")
     (source
      (origin
        (method git-fetch)
@@ -24,7 +24,7 @@
               (commit (string-append "v" version))))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "0n8c7w8zz45f4j63y0x8rfv9prvrxs7l14ai573h8ynryavnrrkv"))))
+        (base32 "01175jnrhn325mb3r8h6srrskq0c59fma5kgpmy69h0rlldmhjdl"))))
     (build-system cargo-build-system)
     (native-inputs (list pkg-config))
     (inputs (cons* openssl
