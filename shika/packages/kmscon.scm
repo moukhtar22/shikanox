@@ -21,7 +21,7 @@
 (define-public libtsm
   (package
     (name "libtsm")
-    (version "4.3.0")
+    (version "4.4.2")
     (source
      (origin
        (method git-fetch)
@@ -30,7 +30,7 @@
               (commit (string-append "v" version))))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "0nryrzvphf878y9lpgx3zbm126qqnf4y65qv3rvzhpdj00w100y4"))))
+        (base32 "0z9zpzzfbhca22vfsdmp9lf6i99x7h5blp3vv0nl2pav029bnv0d"))))
     (build-system meson-build-system)
     (native-inputs (list check libxkbcommon pkg-config))
     (home-page "https://github.com/kmscon/libtsm")
@@ -41,10 +41,10 @@ terminal emulators.  It tries to support all common standards while keeping
 compatibility to existing emulators like xterm, gnome-terminal, konsole, etc.")
     (license (list license:expat license:lgpl2.1+ license:isc license:bsd-2))))
 
-(define-public kmscon
+(define-public kmscon-next
   (package
     (name "kmscon")
-    (version "9.2.1")
+    (version "9.3.2")
     (source
      (origin
        (method git-fetch)
@@ -53,7 +53,7 @@ compatibility to existing emulators like xterm, gnome-terminal, konsole, etc.")
               (commit (string-append "v" version))))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "0dspyvjljd23xb1j32ivpvbhpwh4bgm15wgjkywblfnr6rjfmq1j"))))
+        (base32 "0x7l3di2bq2a8hz2iwqjs3jp5wglxjixnxjspkiznrvn7zzgslbb"))))
     (build-system meson-build-system)
     (native-inputs (list docbook-xsl libxslt pkg-config))
     (inputs (list check
@@ -71,4 +71,4 @@ compatibility to existing emulators like xterm, gnome-terminal, konsole, etc.")
 It is an attempt to replace the in-kernel VT implementation with a userspace console.")
     (license (list license:expat license:lgpl2.1+ license:bsd-2 license:gpl2+))))
 
-kmscon
+kmscon-next
