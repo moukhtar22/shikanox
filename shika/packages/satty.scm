@@ -18,7 +18,7 @@
 (define-public satty
   (package
     (name "satty")
-    (version "0.20.0")
+    (version "0.20.0") ;waiting rust-1.92 merge to guix master
     (source
      (origin
        (method git-fetch)
