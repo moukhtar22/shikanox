@@ -12,7 +12,7 @@
   #:use-module ((guix licenses) #:prefix license:))
 
 (define-public wlr-dpms
-  (let ((commit "b6a4aa82d7760d09a3323c93b02e10eb9eb89a3d"))
+  (let ((commit "92dcde33b20d72fb23b3117a00a9f0a35fe6a37c"))
     (package
       (name "wlr-dpms")
       (version (git-version "0.0.0" "0" commit))
@@ -24,7 +24,7 @@
                 (commit commit)))
          (file-name (git-file-name name version))
          (sha256
-          (base32 "0vgvspzciz829fg5v2h4ma146s8hd78hg576czx6mg8r2jcqndrl"))))
+          (base32 "0i4c0gi1l6y0zaidzzw0iqavlk1hamp7hhckwbw7ycwygzksycya"))))
       (build-system gnu-build-system)
       (arguments
        (list
