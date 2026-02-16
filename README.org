@@ -28,18 +28,18 @@ A personal WIP GNU/Linux distro based on GNU Guix.
     "7C9E 7EBA 828C 58DF DACE  5BED 4DCC 7AB7 FC75 319B"))))
 #+END_SRC
 
-* Maak file
+* Blueprint file
 
-This repository uses [[https://codeberg.org/jjba23/maak][maak]].
+This repository uses [[https://codeberg.org/lapislazuli/blue][blue]].
 
 Instead of running long guix invocations manually, you can for example do:
 
 #+BEGIN_SRC sh
-  maak fmt
-  maak update
+  blue style
+  blue up
 #+END_SRC
 
-(Hacky maak wrapper binary loaded to =$PATH= with direnv)
+(Hacky blue wrapper binary loaded to =$PATH= with direnv)
 
 * Acknowledgments
 

@@ -1,0 +1,48 @@
+#!/usr/bin/env -S guix shell blue stow -- env -S blue -f
+;; -*- mode: scheme -*-
+;; SPDX-FileCopyrightText: 2026 Nikita Mitasov <me@ch4og.com>
+;; SPDX-License-Identifier: GPL-3.0-or-later
+!#
+
+(use-modules
+ (blue types blueprint)
+ (blue types command)
+ (ice-9 match)
+ (ice-9 ftw))
+
+(define config-root
+  (dirname (canonicalize-path (current-filename))))
+
+(add-to-load-path config-root)
+
+(define-command (style-command args)
+  ((invoke "style")
+   (category 'shika)
+   (synopsis "Style all files")
+   (help "Style all .scm files"))
+  (system (string-join `("find" ,(string-append config-root "/shika")
+                         "-type f"
+                         "-name '*.scm'"
+                         "-exec guix style -f {} \\;") " ")))
+
+(define-command (update-command args)
+  ((invoke "up")
+   (category 'shika)
+   (synopsis "Update packages")
+   (help "Update packages versions"))
+  (for-each (lambda (name)
+              (format #t "Refreshing ~a~%" name)
+              (system (string-join `("guix refresh" "-L"
+                                     ,config-root "-u"
+                                     ,(string-append "--select='module:(shika packages " name ")'"))
+                                   " ")))
+            (map (lambda (f)
+                   (substring f 0
+                              (- (string-length f) 4)))
+                 (filter (lambda (f)
+                           (string-suffix? ".scm" f))
+                         (scandir (string-append config-root "/shika/packages"))))))
+
+(blueprint
+ (commands (list style-command
+                 update-command)))
