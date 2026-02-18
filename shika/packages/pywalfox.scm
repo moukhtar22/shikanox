@@ -8,6 +8,7 @@
   #:use-module (guix build-system pyproject)
   #:use-module (guix build-system python)
   #:use-module (gnu packages python-build)
+  #:use-module (gnu packages python)
   #:use-module (shika utils cargo)
   #:use-module ((guix licenses) #:prefix license:))
 
@@ -26,7 +27,28 @@
      (list
       #:phases
       #~(modify-phases %standard-phases
-          (delete 'check)))) ;tests don't exist
+          ;; Tests do not exist.
+          (delete 'check)
+          ;; Pywalfox don't check +x bit before setting it.
+          (add-after 'unpack 'dont-chmod
+            (lambda _
+              (substitute* "pywalfox/install.py"
+                (("set_executable_permissions\\(BIN_PATH_UNIX\\)") ""))))
+          ;; Add +x bit for main script.
+          (add-after 'install 'chmod-shell-scripts
+            (lambda* _
+              (use-modules (guix build utils))
+              (let* ((version (string-split #$(package-version python) #\.))
+                     (shortver (string-append (car version) "." (cadr version)))
+                     (target-dir
+                      (string-append
+                       #$output
+                       "/lib/python" shortver
+                       "/site-packages/pywalfox/bin")))
+                (for-each
+                 (lambda (file)
+                   (chmod file #o555))
+                 (find-files target-dir "\\.sh$"))))))))
     (native-inputs (list python-setuptools))
     (home-page "https://github.com/frewacom/pywalfox")
     (synopsis "Dynamic theming of Firefox and Thunderbird using your Pywal colors")
