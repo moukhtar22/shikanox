@@ -9,18 +9,18 @@
   #:use-module (gnu packages rust-apps)
   #:use-module ((guix licenses) #:prefix license:))
 
-(define-public matugen-shika
+(define-public matugen
   (package
-    (inherit matugen)
-    (name "matugen-shika")
-    (version "3.1.0")
+    (inherit (@ (gnu packages rust-apps) matugen))
+    (name "matugen")
+    (version "4.0.0")
     (source
      (origin
        (method url-fetch)
        (uri (crate-uri "matugen" version))
        (file-name (string-append "matugen" "-" version ".tar.gz"))
        (sha256
-        (base32 "0h6028ipdx3d7ddh6gcn8kdvainmw93kia74wihwc6q1xl3hwzi9"))))
-    (inputs (shika-cargo-inputs 'matugen-shika))))
+        (base32 "0xn0i3vnwpxkxlccm8z7p4pmp2yrgvbmlpr18iffk694is9ik98r"))))
+    (inputs (shika-cargo-inputs 'matugen))))
 
-matugen-shika
+matugen
