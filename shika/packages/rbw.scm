@@ -15,9 +15,9 @@
   #:use-module (shika utils cargo)
   #:use-module ((guix licenses) #:prefix license:))
 
-(define-public rbw-next
+(define-public rbw
   (package
-    (inherit rbw)
+    (inherit (@ (gnu packages rust-apps) rbw))
     (version "1.15.0")
     (source
      (origin
@@ -47,7 +47,7 @@
     (build-system pyproject-build-system)
     (native-inputs (list python-hatchling))
     (inputs (list python-configargparse))
-    (propagated-inputs (list rbw-next))
+    (propagated-inputs (list rbw))
     (home-page "https://github.com/fdw/rofi-rbw")
     (synopsis "Rofi frontend for Bitwarden")
     (description
