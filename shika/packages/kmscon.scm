@@ -41,7 +41,7 @@ terminal emulators.  It tries to support all common standards while keeping
 compatibility to existing emulators like xterm, gnome-terminal, konsole, etc.")
     (license (list license:expat license:lgpl2.1+ license:isc license:bsd-2))))
 
-(define-public kmscon-next
+(define-public kmscon
   (package
     (name "kmscon")
     (version "9.3.2")
@@ -71,4 +71,4 @@ compatibility to existing emulators like xterm, gnome-terminal, konsole, etc.")
 It is an attempt to replace the in-kernel VT implementation with a userspace console.")
     (license (list license:expat license:lgpl2.1+ license:bsd-2 license:gpl2+))))
 
-kmscon-next
+kmscon
