@@ -2,6 +2,7 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
 
 (define-module (shika packages kmscon)
+  #:use-module (guix gexp)
   #:use-module (guix git-download)
   #:use-module (guix packages)
   #:use-module (guix build-system meson)
@@ -55,6 +56,15 @@ compatibility to existing emulators like xterm, gnome-terminal, konsole, etc.")
        (sha256
         (base32 "0x7l3di2bq2a8hz2iwqjs3jp5wglxjixnxjspkiznrvn7zzgslbb"))))
     (build-system meson-build-system)
+    (arguments
+     (list
+      #:phases
+      #~(modify-phases %standard-phases
+          (add-after 'unpack 'patch-kms-start-script
+            (lambda _
+              (substitute* "src/pty.c"
+                (("kmscon-launch-gui")
+                 (string-append #$output "/bin/kmscon-launch-gui"))))))))
     (native-inputs (list docbook-xsl libxslt pkg-config))
     (inputs (list check
                   elogind
