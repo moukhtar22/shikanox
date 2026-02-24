@@ -20,7 +20,7 @@
 (define-public protonplus
   (package
     (name "protonplus")
-    (version "0.5.16")
+    (version "0.5.17")
     (source
      (origin
        (method git-fetch)
@@ -29,7 +29,7 @@
               (commit (string-append "v" version))))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "0vq2bin34502shbss3c6cxli7xijxn0ahmxrmcw03l7x2svgkdm8"))))
+        (base32 "1hgc22dsjp1s7n0icnkacvap2r50d26jmav7k4ypr64mw6qjmss6"))))
     (build-system meson-build-system)
     (arguments
      (list
