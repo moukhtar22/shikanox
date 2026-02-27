@@ -6,6 +6,7 @@
   #:use-module (guix packages)
   #:use-module (guix git-download)
   #:use-module (guix build-system cargo)
+  #:use-module (gnu packages base)
   #:use-module (gnu packages fontutils)
   #:use-module (gnu packages gl)
   #:use-module (gnu packages glib)
@@ -18,7 +19,7 @@
 (define-public satty
   (package
     (name "satty")
-    (version "0.20.0") ;waiting rust-1.92 merge to guix master
+    (version "0.20.1")
     (source
      (origin
        (method git-fetch)
@@ -27,10 +28,11 @@
               (commit (string-append "v" version))))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "1j15fb6lmwss4i3xla3cpj5njqbjbcr6r55a2drc5qd8mj3ml5g1"))))
+        (base32 "1fzz0wmzzjzqskbc8ss5yjifk4w5hd6cway740f8cyrfj5rwq7d5"))))
     (build-system cargo-build-system)
     (arguments
      (list
+      #:install-source? #f
       #:imported-modules `((guix build glib-or-gtk-build-system)
                            ,@%cargo-build-system-modules)
       #:modules '((guix build cargo-build-system)
@@ -38,9 +40,14 @@
                   ((guix build glib-or-gtk-build-system) #:prefix gtk:))
       #:phases
       #~(modify-phases %standard-phases
+          (replace 'install
+            (lambda* _
+              (invoke "sh" "-c"
+                      (string-append "PREFIX=" #$output " make install"))))
           (add-after 'install 'glib-or-gtk-wrap
             (assoc-ref gtk:%standard-phases 'glib-or-gtk-wrap)))))
-    (native-inputs (list pkg-config))
+    (native-inputs (list pkg-config
+                         gnu-make))
     (inputs (cons* gtk
                    libadwaita
                    (shika-cargo-inputs 'satty)))
