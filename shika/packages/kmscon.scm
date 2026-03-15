@@ -2,83 +2,21 @@
 ;;; SPDX-License-Identifier: GPL-3.0-or-later
 
 (define-module (shika packages kmscon)
-  #:use-module (guix gexp)
   #:use-module (guix git-download)
   #:use-module (guix packages)
-  #:use-module (guix build-system meson)
-  #:use-module (gnu packages check)
-  #:use-module (gnu packages docbook)
-  #:use-module (gnu packages freedesktop)
-  #:use-module (gnu packages gl)
-  #:use-module (gnu packages gtk)
-  #:use-module (gnu packages linux)
-  #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages terminals)
-  #:use-module (gnu packages xdisorg)
-  #:use-module (gnu packages xml)
-  #:use-module ((guix licenses) #:prefix license:))
-
+  #:use-module (shika utils override))
 
 (define-public libtsm
-  (package
-    (name "libtsm")
-    (version "4.4.2")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-              (url "https://github.com/kmscon/libtsm")
-              (commit (string-append "v" version))))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32 "0z9zpzzfbhca22vfsdmp9lf6i99x7h5blp3vv0nl2pav029bnv0d"))))
-    (build-system meson-build-system)
-    (native-inputs (list check libxkbcommon pkg-config))
-    (home-page "https://github.com/kmscon/libtsm")
-    (synopsis "Terminal-emulator State Machine")
-    (description
-     "TSM is a state machine for DEC VT100-VT520 compatible
-terminal emulators.  It tries to support all common standards while keeping
-compatibility to existing emulators like xterm, gnome-terminal, konsole, etc.")
-    (license (list license:expat license:lgpl2.1+ license:isc license:bsd-2))))
+  (shika-override (@ (gnu packages terminals) libtsm)
+                  #:version "4.4.2"
+                  #:hash "0z9zpzzfbhca22vfsdmp9lf6i99x7h5blp3vv0nl2pav029bnv0d"))
 
 (define-public kmscon
-  (package
-    (name "kmscon")
-    (version "9.3.2")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-              (url "https://github.com/kmscon/kmscon")
-              (commit (string-append "v" version))))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32 "0x7l3di2bq2a8hz2iwqjs3jp5wglxjixnxjspkiznrvn7zzgslbb"))))
-    (build-system meson-build-system)
-    (arguments
-     (list
-      #:phases
-      #~(modify-phases %standard-phases
-          (add-after 'unpack 'patch-kms-start-script
-            (lambda _
-              (substitute* "src/pty.c"
-                (("kmscon-launch-gui")
-                 (string-append #$output "/bin/kmscon-launch-gui"))))))))
-    (native-inputs (list docbook-xsl libxslt pkg-config))
-    (inputs (list check
-                  elogind
-                  eudev
-                  libdrm
-                  libtsm
-                  libxkbcommon
-                  mesa
-                  pango))
-    (home-page "https://github.com/kmscon/kmscon")
-    (synopsis "Linux KMS/DRM based virtual Console Emulator")
-    (description
-     "Simple terminal emulator based on linux kernel mode setting (KMS).
-It is an attempt to replace the in-kernel VT implementation with a userspace console.")
-    (license (list license:expat license:lgpl2.1+ license:bsd-2 license:gpl2+))))
+  (shika-override (@ (gnu packages terminals) kmscon)
+                  #:version "9.3.2"
+                  #:hash "0x7l3di2bq2a8hz2iwqjs3jp5wglxjixnxjspkiznrvn7zzgslbb"
+                  #:inputs (modify-inputs (package-inputs (@ (gnu packages terminals) kmscon))
+                             (replace "libtsm" libtsm))))
 
 kmscon
