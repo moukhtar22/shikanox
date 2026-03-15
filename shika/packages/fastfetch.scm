@@ -11,5 +11,5 @@
     (name "fastfetch-no-zfs")
     (inputs
      (modify-inputs (package-inputs fastfetch)
-       (delete 'zfs)))))
+       (delete "zfs")))))
 fastfetch-no-zfs
