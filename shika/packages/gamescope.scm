@@ -47,7 +47,7 @@ complexity/hastle away from you! It's so simple!")
       (license (list license:asl2.0 license:expat)))))
 
 (define wlroots-for-gamescope
-  (shika-git-override wlroots
+  (shika-override wlroots
                       #:version "0.18.0"
                       #:commit "54e844748029d4874e14d0c086d50092c04c8899"
                       #:url "https://github.com/misyltoad/wlroots"
@@ -56,7 +56,7 @@ complexity/hastle away from you! It's so simple!")
                       #:home-page "https://github.com/misyltoad/wlroots"))
 
 (define reshade-for-gamescope
-  (shika-git-override reshade
+  (shika-override reshade
                       #:version "6.1.1"
                       #:commit "696b14cd6006ae9ca174e6164450619ace043283"
                       #:url "https://github.com/misyltoad/reshade"
@@ -65,14 +65,14 @@ complexity/hastle away from you! It's so simple!")
                       #:home-page "https://github.com/misyltoad/reshade"))
 
 (define spirv-headers-for-gamescope
-  (shika-git-override spirv-headers
+  (shika-override spirv-headers
                       #:version "1.3.261"
                       #:commit "d790ced752b5bfc06b6988baadef6eb2d16bdf96"
                       #:hash
                       "1zzkqbqysiv52dk92i35gsyppnasln3d27b4rqv590zknk5g38is"))
 
 (define openvr-for-gamescope
-  (shika-git-override openvr
+  (shika-override openvr
                       #:version "2.12.1"
                       #:commit "ff87f683f41fe26cc9353dd9d9d7028357fd8e1a"
                       #:hash
@@ -80,7 +80,7 @@ complexity/hastle away from you! It's so simple!")
 
 ;; guix has 0.5.0 too but we will lock it
 (define libliftoff-for-gamescope
-  (shika-git-override libliftoff
+  (shika-override libliftoff
                       #:version "0.5.0"
                       #:commit "8b08dc1c14fd019cc90ddabe34ad16596b0691f4"
                       #:hash
