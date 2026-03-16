@@ -7,7 +7,7 @@
 
 (define-public fastfetch-no-zfs
   (package
-    (inherit fastfetch)
+    (inherit fastfetch-minimal)
     (name "fastfetch-no-zfs")
     (inputs
      (modify-inputs (package-inputs fastfetch)
