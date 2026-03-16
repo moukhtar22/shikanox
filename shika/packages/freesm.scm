@@ -42,8 +42,9 @@
                 "1hswz28iz0y12i78ys1a8f74pav45imsi26h0jrsakdvav98nscn"))))
     (build-system cmake-build-system)
     (arguments
-     `(#:phases
-       (modify-phases %standard-phases
+     (list
+        #:phases
+       #~(modify-phases %standard-phases
          (add-after 'install 'patch-paths
            (lambda* (#:key inputs #:allow-other-keys)
              (let ((bin (string-append #$output "/bin/freesmlauncher"))
