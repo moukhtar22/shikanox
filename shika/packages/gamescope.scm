@@ -89,7 +89,7 @@ complexity/hastle away from you! It's so simple!")
 (define-public gamescope
   (package
     (name "gamescope")
-    (version "3.16.20")
+    (version "3.16.22")
     (source
      (origin
        (method git-fetch)
@@ -98,7 +98,7 @@ complexity/hastle away from you! It's so simple!")
               (commit version)))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "05rdxaa99srnjmfi4ijicyiy3gxhjfy5yikxmn93igpyr0y74w30"))))
+        (base32 "0yja2cgn2w0bmdp096523alz2ymp8jc1sfrgqnfkvjck8rnbr228"))))
     (build-system meson-build-system)
     (native-inputs (list bash-minimal pkg-config))
     (inputs (list eudev
