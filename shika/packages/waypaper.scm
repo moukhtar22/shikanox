@@ -71,7 +71,7 @@
                   python-imageio
                   python-imageio-ffmpeg
                   python-platformdirs
-                  python-pygobject
+                  python-pygobject-3.50
                   python-screeninfo))
     (home-page "https://anufrievroman.gitbook.io/waypaper")
     (synopsis "GUI wallpaper manager for Wayland and Xorg Linux systems")
