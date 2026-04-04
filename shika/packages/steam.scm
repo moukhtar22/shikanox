@@ -3,7 +3,6 @@
 
 (define-module (shika packages steam)
   #:use-module (nongnu packages game-client)
-  #:use-module (nongnu packages nvidia)
   #:use-module (shika packages gamescope)
   #:use-module (nonguix utils)
   #:use-module (gnu packages gl)
@@ -29,7 +28,8 @@
 (define-public steam-gamescope
   (package-with-alias "steam-gamescope" (steam-gamescope-for mesa)))
 
-(define-public steam-gamescope-nvidia
-  (package-with-alias "steam-gamescope-nvidia" (steam-gamescope-for nvda)))
+;;; steam-gamescope-nvidia is removed because of new nonguix approach of using it.
+;;; to use steam-gamescope on nvidia system add (steam-gamescope-for nvda-580) to packages.
+;;; replace nvda-580 with version you want.
 
 steam-gamescope
