@@ -9,13 +9,13 @@
 
 (define-public libtsm
   (shika-override (@ (gnu packages terminals) libtsm)
-                  #:version "4.4.2"
-                  #:hash "0z9zpzzfbhca22vfsdmp9lf6i99x7h5blp3vv0nl2pav029bnv0d"))
+                  #:version "4.4.3"
+                  #:hash "011zpzzfbhca22vfsdmp9lf6i99x7h5blp3vv0nl2pav029bnv0d"))
 
 (define-public kmscon
   (shika-override (@ (gnu packages terminals) kmscon)
-                  #:version "9.3.2"
-                  #:hash "0x7l3di2bq2a8hz2iwqjs3jp5wglxjixnxjspkiznrvn7zzgslbb"
+                  #:version "9.3.3"
+                  #:hash "0b2hv8zbp20iqa6zgwvzdvahs5wg3axv8aw1xk81qs7rjsaw7n2k"
                   #:inputs (modify-inputs (package-inputs (@ (gnu packages terminals) kmscon))
                              (replace "libtsm" libtsm))))
 
